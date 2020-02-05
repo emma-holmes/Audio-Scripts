@@ -18,4 +18,7 @@ The magnitude of the pitch shift will depend on the method specified above. For 
 ### Prerequisites
 This script can be run using Praat, which can be installed from the following link: [http://www.fon.hum.uva.nl/praat/](http://www.fon.hum.uva.nl/praat/)
 <br>
-To use, download the [BATCH_pitchShift](BATCH_pitchShift) script, open the script in Praat, then select Run from the menu.
+The script was tested using Praat version 6.0.36 for Windows.
+
+### Running the script
+To use, download the [BATCH_pitchShift](BATCH_pitchShift) script, open the script in Praat, then select Run from the toolbar.
