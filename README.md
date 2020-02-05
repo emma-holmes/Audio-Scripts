@@ -1,6 +1,9 @@
 # Audio-Scripts
 Miscallaneous scripts for auditory / hearing / speech research
 
+## License
+These scripts are licensed under the GNU General Public License v3.0; see the [LICENSE](LICENSE) file for details.
+
 ## BATCH_pitchShift
 This script is designed for editing the pitch and formant spacing of audio files. The script will find all .wav files within the specified directory and create new versions of every file, which is saved in a new subdirectory (so you don't need to worry about overwriting files). When the script is run, it generates a form, which enables the user to specify the directory, the magnitude of the pitch shift (or 0 if no pitch shift), and the desired formant ratio (specify 1 to maintain original formant spacing).
 <br><br>
@@ -15,4 +18,4 @@ The magnitude of the pitch shift will depend on the method specified above. For 
 ### Prerequisites
 This script can be run using Praat, which can be installed from the following link: [http://www.fon.hum.uva.nl/praat/](http://www.fon.hum.uva.nl/praat/)
 <br>
-To use,download the [BATCH_pitchShift](BATCH_pitchShift) script, open the script in Praat, then select Run from the menu.
+To use, download the [BATCH_pitchShift](BATCH_pitchShift) script, open the script in Praat, then select Run from the menu.
