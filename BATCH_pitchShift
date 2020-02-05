@@ -1,0 +1,85 @@
+form Specify parameters
+	comment Choose the directory containing sound files (ensure this ends with a slash)
+	sentence dir C:\Users\evanssa\Dropbox\C3\Stroop_Sam\pitch\FemaleVoice\
+	comment Choose the type of pitch shift you wish to implement
+	choice pitchType: 4
+		button Hertz
+		button PercentChange
+		button Semitones
+		button ERBs
+	comment Choose the magnitude of the pitch shift (0 = no change, +ve = pitch increase, -ve = pitch decrease)
+	real pitchMagnitude 0
+	comment Option to change formant ratio (1 = no change)
+	positive formantRatio 1
+endform
+
+Create Strings as file list: "fileList", dir$ + "*.wav"
+nStrings = Get number of strings
+
+newDirectory$ = dir$ + "pitch" + pitchType$ + fixed$(pitchMagnitude, 2) + "_formant" + fixed$(formantRatio, 2) + "\"
+createDirectory: newDirectory$
+
+textFile$ = newDirectory$ + "_Praat_Summary.txt"
+
+writeFileLine: textFile$, "Analysing ", nStrings, " files..."
+appendFileLine: textFile$, "pitchType:      ", pitchType$
+appendFileLine: textFile$, "pitchMagnitude: ", pitchMagnitude
+appendFileLine: textFile$, "formantRatio:   ", formantRatio
+appendFileLine: textFile$, " "
+
+for i from 1 to nStrings
+	
+	selectObject: "Strings fileList"
+	name$ = Get string: i
+	appendFileLine: textFile$, "File ", i, ": ", name$
+
+	filename$ = dir$ + name$
+	soundname$ = name$ - ".wav"
+	newFilename$ = newDirectory$ + name$
+
+	# Load WAV file
+	Read from file: filename$
+
+	# Convert to mono
+	selectObject: "Sound " + soundname$
+	Convert to mono
+
+	# Get median pitch
+	To Pitch: 0, 75, 600
+	oldMedianPitch = Get quantile: 0, 0, 0.5, "Hertz"
+	appendFileLine: textFile$, "Original pitch = ", oldMedianPitch
+
+	# Calculate new pitch
+	if pitchType$ = "Hertz"
+		newMedianPitch = oldMedianPitch + pitchMagnitude
+	elsif pitchType$ = "PercentChange"
+		newMedianPitch = oldMedianPitch * (1 + (pitchMagnitude / 100))		
+	elsif pitchType$ = "Semitones"
+		newMedianPitch = oldMedianPitch * (2 ^ (pitchMagnitude / 12))
+	elsif pitchType$ = "ERBs"
+		newMedianPitch = oldMedianPitch
+		for p from 1 to abs (pitchMagnitude)
+			if pitchMagnitude > 0
+				newMedianPitch = oldMedianPitch + (24.7 * (4.37 * (oldMedianPitch / 1000) + 1))
+			elsif pitchMagnitude < 0
+				newMedianPitch = oldMedianPitch - (24.7 * (4.37 * (oldMedianPitch / 1000) + 1))
+			endif
+			oldMedianPitch = newMedianPitch
+		endfor
+	endif
+	appendFileLine: textFile$, "New pitch      = ", newMedianPitch
+
+	# Change formant ratio and pitch ratio
+	selectObject: "Sound " + soundname$ + "_mono"
+	Change gender: 75, 600, formantRatio, newMedianPitch, 1, 1
+
+	# Save and play edited file
+	Save as WAV file: newFilename$
+	
+	removeObject: "Sound " + soundname$
+	removeObject: "Sound " + soundname$ + "_mono"
+	removeObject: "Pitch " + soundname$ + "_mono"
+	removeObject: "Sound " + soundname$ + "_mono" + "_changeGender"
+	appendFileLine: textFile$, " "
+
+endfor
