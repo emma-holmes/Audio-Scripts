@@ -22,3 +22,29 @@ The script was tested using Praat version 6.0.36 for Windows.
 
 ### Running the script
 To use, download the [BATCH_pitchShift](BATCH_pitchShift) script, open the script in Praat, then select Run from the toolbar.
+
+## plot_audiogram
+This script plots audiometric thresholds on a graph. Plots worse frequencies towards the bottom of the graph.
+
+### Prerequisites
+This is a MATLAB script, tested using MATLAB R2017a. The [format_graph.m](format_graph.m) script should be in the MATLAB path.
+
+### Running the script
+Use as: <br>
+hFig = plot_audiogram(hFig, freq, threshs, xLimits, yLimits, plotColour, ind_threshs, ind_colour, save_file)
+<br><br>
+e.g., <br>
+hFig = plot_audiogram([], [250, 500, 1000, 2000, 4000, 8000], [5, 5, 5, 10, 5, 10], [200, 8050], [-10, 80], 'k', [], [], 'audiogram_plot')
+<br><br>
+The script takes the following inputs:
+| Input       | Description   |
+|-------------|---------------|
+| hFig        | Handle for figure or axis. To create new, pass empty vector. |
+| freq        | Vector containing frequencies to plot.|
+| threshs     | Vector containing threshold values to plot. |
+| xLimits     | 2-element vector containing upper and lower bounds of x-axis (frequencies). Default = [0, 8000]. |
+| yLimits     | 2-element vector containing upper and lower bounds of y-axis (thresholds). Default = [-10, 60]. |
+| plotColour  | MATLAB ColorSpec, e.g., 'r' or [1, 0, 0]. |
+| ind_threshs | N x freq matrix specifying thresholds for individual  participants to plot on graph. If empty, does not plot individual participants. |
+| ind_colour  | N x 3 matrix of RGB color values, corresponding to the individual thresholds specified in ind_thresh. |
+| save_file   | String containing filepath to save plot. If empty vector passed, plot not saved. |
