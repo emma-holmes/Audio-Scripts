@@ -1,20 +1,20 @@
 function [hFig] = plot_audiogram(hFig, freq, threshs, xLimits, yLimits, plotColour, ind_threshs, ind_colour, save_file)
 % [hFig] = plot_audiogram(hFig, freq, threshs, xLimits, yLimits, ...
-%    plotColour, PLOT_IND)
+%   plotColour, ind_threshs, ind_colour, save_file)
 %       hFig        Handle for figure or axis. To create new, pass empty
 %                   vector.
 %       freq        Vector containing frequencies to plot.
 %       threshs    	Vector containing threshold values to plot.
 %       xLimits     2-element vector containing upper and lower bounds of
-%                   x-axis (frequencies).
+%                   x-axis (frequencies). Default = [0, 8000].
 %       yLimits     2-element vector containing upper and lower bounds of
-%                   y-axis (thresholds).
+%                   y-axis (thresholds). Default = [-10, 60].
 %       plotColour  MATLAB ColorSpec, e.g., 'r' or [1, 0, 0].
 %       ind_threshs N x freq matrix specifying thresholds for individual
 %                   participants to plot on graph. If empty, does not plot
 %                   individual participants.
 %       ind_colour  N x 3 matrix of RGB color values, corresponding to the
-%                   individual thresholds specified in ind_thresh
+%                   individual thresholds specified in ind_thresh.
 %       save_file   String containing filepath to save plot. If empty
 %                   vector passed, plot not saved.
 %
@@ -26,7 +26,7 @@ function [hFig] = plot_audiogram(hFig, freq, threshs, xLimits, yLimits, plotColo
 markerSize 	= 30;
 lineWidth   = 1.5;
 indWidth    = 0.5;
-xTitle      = 'Frequency (Hz)';
+xTitle      = 'Frequency';
 yTitle      = 'Threshold (dB HL)';
 
 % Draw figure
