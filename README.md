@@ -1,5 +1,8 @@
 # Audio-Scripts
 Miscallaneous scripts for auditory / hearing / speech research
+* BATCH_pitchShift
+* BATCH_normalise_RMS_amp
+* plot_audiogram
 
 ## License
 These scripts are licensed under the GNU General Public License v3.0; see the [LICENSE](LICENSE) file for details.
