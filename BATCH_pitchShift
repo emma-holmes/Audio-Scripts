@@ -1,13 +1,15 @@
 form Specify parameters
 	comment Choose the directory containing sound files (ensure this ends with a slash)
-	sentence dir C:\Users\evanssa\Dropbox\C3\Stroop_Sam\pitch\FemaleVoice\
+	sentence dir C:\Users\emmah\Downloads\Stroop\tokens\normalise_RMS_to_0.015\After_Excluding\
 	comment Choose the type of pitch shift you wish to implement
-	choice pitchType: 4
-		button Hertz
+	choice pitchType: 5
+		button HertzChange
 		button PercentChange
-		button Semitones
-		button ERBs
+		button SemitonesChange
+		button ERBsChange
+		button AbsoluteValueHz
 	comment Choose the magnitude of the pitch shift (0 = no change, +ve = pitch increase, -ve = pitch decrease)
+	comment (If AbsoluteValueHz selected, enter a +ve value corresponding to final pitch in Hz)
 	real pitchMagnitude 0
 	comment Option to change formant ratio (1 = no change)
 	positive formantRatio 1
@@ -50,13 +52,13 @@ for i from 1 to nStrings
 	appendFileLine: textFile$, "Original pitch = ", oldMedianPitch
 
 	# Calculate new pitch
-	if pitchType$ = "Hertz"
+	if pitchType$ = "HertzChange"
 		newMedianPitch = oldMedianPitch + pitchMagnitude
 	elsif pitchType$ = "PercentChange"
 		newMedianPitch = oldMedianPitch * (1 + (pitchMagnitude / 100))		
-	elsif pitchType$ = "Semitones"
+	elsif pitchType$ = "SemitonesChange"
 		newMedianPitch = oldMedianPitch * (2 ^ (pitchMagnitude / 12))
-	elsif pitchType$ = "ERBs"
+	elsif pitchType$ = "ERBsChange"
 		newMedianPitch = oldMedianPitch
 		for p from 1 to abs (pitchMagnitude)
 			if pitchMagnitude > 0
@@ -66,6 +68,8 @@ for i from 1 to nStrings
 			endif
 			oldMedianPitch = newMedianPitch
 		endfor
+	elsif pitchType$ = "AbsoluteValueHz"
+		newMedianPitch = pitchMagnitude
 	endif
 	appendFileLine: textFile$, "New pitch      = ", newMedianPitch
 
