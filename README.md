@@ -1,7 +1,10 @@
 # Audio-Scripts
 Miscallaneous scripts for auditory / hearing / speech research
 * BATCH_pitchShift
+* BATCH_durationShift
 * BATCH_normalise_RMS_amp
+* analyse_pitch
+* analyse_duration
 * plot_audiogram
 
 ## License
@@ -33,6 +36,27 @@ To use, download the [BATCH_pitchShift](BATCH_pitchShift) script, open the scrip
 
 
 
+## BATCH_durationShift
+This script is designed for editing the duration of audio files. The script will find all .wav files within the specified directory and create new versions of every file, which is saved in a new subdirectory (so you don't need to worry about overwriting files). When the script is run, it generates a form, which enables the user to specify the directory and the magnitude of the duration shift.
+<br><br>
+The script gives users the option to specify the duration shift in 3 different ways:
+1) Specify a new duration value in seconds (e.g. 1.6 seconds)
+2) Change the duration by an absolute value in seconds
+3) Change the duration by a percentage (e.g. if you wanted a 20% increase or decrease in duration)
+<br><br>
+The magnitude of the duration shift will depend on the method specified above. For example, if option (2) is selected, then entering 0.5 as an input will increase the duration of the file by 0.5 seconds. To specify durations shorter than the original file, enter a negative number.
+
+### Prerequisites
+This script can be run using Praat, which can be installed from the following link: [http://www.fon.hum.uva.nl/praat/](http://www.fon.hum.uva.nl/praat/)
+<br>
+The script was tested using Praat version 6.0.36 for Windows.
+
+### Running the script
+To use, download the [BATCH_durationShift](BATCH_durationShift) script, open the script in Praat, then select Run from the toolbar.
+
+
+
+
 ## BATCH_normalise_RMS_amp
 This script takes all .wav files in a specified directory, normalises the RMS amplitude, and saves them into a new subdirectory.
 
@@ -51,6 +75,34 @@ The script takes the following inputs:
 |-------------|---------------|
 | DIR         | String specifying the directory containing files to modify. |
 | RMS         | RMS amplitude value (number between 0 and 1). Leave empty to display average RMS amplitude of files in directory before user input.|
+
+
+
+
+## analyse_pitch
+This script is designed for analysing the pitch of audio files. The script will find all .wav files within the specified directory and create a new text file in the directory, which contains a list of the median pitches of the files (in alphabetical order). When the script is run, it generates a form, which enables the user to specify the directory to analyse.
+
+### Prerequisites
+This script can be run using Praat, which can be installed from the following link: [http://www.fon.hum.uva.nl/praat/](http://www.fon.hum.uva.nl/praat/)
+<br>
+The script was tested using Praat version 6.0.36 for Windows.
+
+### Running the script
+To use, download the [analyse_pitch](analyse_pitch) script, open the script in Praat, then select Run from the toolbar.
+
+
+
+
+## analyse_duration
+This script is designed for analysing the duration of audio files. The script will find all .wav files within the specified directory and create a new text file in the directory, which contains a list of the durations of the files (in alphabetical order). When the script is run, it generates a form, which enables the user to specify the directory to analyse.
+
+### Prerequisites
+This script can be run using Praat, which can be installed from the following link: [http://www.fon.hum.uva.nl/praat/](http://www.fon.hum.uva.nl/praat/)
+<br>
+The script was tested using Praat version 6.0.36 for Windows.
+
+### Running the script
+To use, download the [analyse_duration](analyse_duration) script, open the script in Praat, then select Run from the toolbar.
 
 
 
