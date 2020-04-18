@@ -1,0 +1,84 @@
+form Specify parameters
+	comment Choose the directory containing sound files (ensure this ends with a slash)
+	sentence dir C:\Users\emmah\Downloads\Stroop\tokens\3-pitchAbsoluteValueHz213\
+	comment Choose the type of duration shift you wish to implement
+	choice durType: 1
+		button AbsoluteDuration
+		button DurationChangeSecs
+		button DurationChangePercent
+	comment Enter the duration in seconds
+	comment (If AbsoluteDuration selected, enter a +ve value corresponding to desired duration)
+	comment (If DurationChangeSecs or DurationChangePercent: 0 = no change, +ve = duration increase, -ve = duration decrease)
+	real duration 0
+endform
+
+Create Strings as file list: "fileList", dir$ + "*.wav"
+nStrings = Get number of strings
+
+newDirectory$ = dir$ + durType$ + fixed$(duration, 2) + "\"
+createDirectory: newDirectory$
+
+textFile$ = newDirectory$ + "_Praat_DurationShift_Summary.txt"
+
+writeFileLine: textFile$, "Analysing ", nStrings, " files..."
+appendFileLine: textFile$, "durType:        ", durType$
+appendFileLine: textFile$, "duration value: ", duration
+appendFileLine: textFile$, " "
+
+for i from 1 to nStrings
+	
+	selectObject: "Strings fileList"
+	name$ = Get string: i
+	appendFileLine: textFile$, "File ", i, ": ", name$
+
+	filename$ = dir$ + name$
+	soundname$ = name$ - ".wav"
+	newFilename$ = newDirectory$ + name$
+
+	# Load WAV file
+	Read from file: filename$
+
+	# Convert to mono
+	selectObject: "Sound " + soundname$
+	Convert to mono
+
+	# Get duration of file
+	oldDuration = Get total duration
+
+	# Calculate new duration
+	if durType$ = "AbsoluteDuration"
+		durationScale = duration / oldDuration
+		newDuration = duration
+	elsif durType$ = "DurationChangeSecs"
+		durationScale = 1 + (duration / oldDuration)
+		newDuration = oldDuration + duration
+	elsif durType$ = "DurationChangePercent"
+		durationScale = 1 + (duration / 100)
+		newDuration = oldDuration * (1 + (duration / 100))		
+	endif
+	appendFileLine: textFile$, "Duration scale = ", durationScale
+	appendFileLine: textFile$, "New duration   = ", newDuration
+
+	# Change duration
+	To Manipulation: 0.01, 75, 600
+	Extract duration tier
+	Add point: 0, durationScale
+	endTime = Get end time
+	Add point: endTime, durationScale
+	selectObject: "Manipulation " + soundname$ + "_mono"
+	plusObject: "DurationTier " + soundname$ + "_mono"
+	Replace duration tier
+	selectObject: "Manipulation " + soundname$ + "_mono"
+	Get resynthesis (overlap-add)
+
+	# Save and play edited file
+	Save as WAV file: newFilename$
+	
+	removeObject: "Sound " + soundname$
+	removeObject: "Sound " + soundname$ + "_mono"
+	removeObject: "Sound " + soundname$ + "_mono"
+	removeObject: "Manipulation " + soundname$ + "_mono"
+	removeObject: "DurationTier " + soundname$ + "_mono"
+	appendFileLine: textFile$, " "
+
+endfor

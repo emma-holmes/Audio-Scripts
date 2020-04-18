@@ -1,0 +1,31 @@
+form Specify parameters
+	comment Enter the directory containing files to analyse:
+	sentence dir C:\Users\emmah\Downloads\Stroop\tokens\1-normalise_RMS_to_0.015\
+endform
+
+Create Strings as file list: "fileList", dir$ + "*.wav"
+nStrings = Get number of strings
+outfilename$ = dir$ + "_AllFiles_MedianPitch_Praat.txt"
+writeFileLine: outfilename$, "MedianPitch(Hz)_DIR=", dir$
+
+for i from 1 to nStrings
+	
+	selectObject: "Strings fileList"
+	name$ = Get string: i
+
+	filename$ = dir$ + name$
+	soundname$ = name$ - ".wav"
+
+	# Load WAV file
+	Read from file: filename$
+
+	# Get median pitch
+	To Pitch: 0, 75, 600
+	oldMedianPitch = Get quantile: 0, 0, 0.5, "Hertz"
+
+	appendFileLine: outfilename$, fixed$(oldMedianPitch, 8)
+	
+	removeObject: "Sound " + soundname$
+	removeObject: "Pitch " + soundname$
+
+endfor

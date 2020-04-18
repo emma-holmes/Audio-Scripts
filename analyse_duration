@@ -1,0 +1,29 @@
+form Specify parameters
+	comment Enter the directory containing files to analyse:
+	sentence dir C:\Users\emmah\Downloads\Stroop\tokens\3-pitchAbsoluteValueHz213\
+endform
+
+Create Strings as file list: "fileList", dir$ + "*.wav"
+nStrings = Get number of strings
+outfilename$ = dir$ + "_AllFiles_Duration_Praat.txt"
+writeFileLine: outfilename$, "Duration(secs)_DIR=", dir$
+
+for i from 1 to nStrings
+	
+	selectObject: "Strings fileList"
+	name$ = Get string: i
+
+	filename$ = dir$ + name$
+	soundname$ = name$ - ".wav"
+
+	# Load WAV file
+	Read from file: filename$
+
+	# Get duration of file
+	oldDuration = Get total duration
+
+	appendFileLine: outfilename$, fixed$(oldDuration, 8)
+	
+	removeObject: "Sound " + soundname$
+
+endfor
