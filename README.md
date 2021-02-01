@@ -6,6 +6,7 @@ Miscallaneous scripts for auditory / hearing / speech research
 * analyse_pitch
 * analyse_duration
 * plot_audiogram
+* calibrate_sound_level
 
 ## License
 These scripts are licensed under the GNU General Public License v3.0; see the [LICENSE](LICENSE) file for details.
@@ -132,3 +133,27 @@ The script takes the following inputs:
 | ind_threshs | N x freq matrix specifying thresholds for individual  participants to plot on graph. If empty, does not plot individual participants. |
 | ind_colour  | N x 3 matrix of RGB color values, corresponding to the individual thresholds specified in ind_thresh. |
 | save_file   | String containing filepath to save plot. If empty vector passed, plot not saved. |
+
+
+
+
+## calibrate_sound_level
+This script is designed as an aid for calibrating the level of acoustic stimuli with a sound level meter. When the script is run, it plays the desired sound and prompts the user to enter the reading from the sound level meter (in decibels). In automatic calibration mode, the script estimates the RMS level for sound playback to reach the desired decibel level. The script saves the RMS levels and sound level meter readings as an output file.
+
+### Prerequisites
+This is a MATLAB script, tested using MATLAB R2017a. The [calibrate_sound_level.m](calibrate_sound_level.m) script should be in the MATLAB path. It is assumed that the user has access to a sound level meter to take readings.
+
+### Running the script
+Use as: <br>
+calibrate_sound_level(wavFile, outFile, desired_level, start_rms)
+<br><br>
+e.g., <br>
+calibrate_sound_level('calibration_stimulus.wav', 'calibration_outputs', 70, 0.05)
+<br><br>
+The script takes the following inputs:
+| Input          | Description   |
+|----------------|---------------|
+| wavFile        | String specifying the filepath to the audio file used for calibration. |
+| outFile        | String specifying the desired filename for the output file. |
+| desired_level  | Desired sound level (in decibels) to calibrate to (e.g., 70).|
+| start_rms      | RMS amplitude value (value between 0 and 1) to start the calibration. Leave empty to play the wavFile as is.|
